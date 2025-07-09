@@ -3,34 +3,53 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const userSchema= new Schema({
-    username:{
-        type:String,
-        required:true,
+     
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+            lowercase: true,
+            trim: true, 
+            index: true
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+            lowecase: true,
+            trim: true, 
+        },
+        fullName: {
+            type: String,
+            required: true,
+            trim: true, 
+            index: true
+        },
+        avatar: {
+            type: String, // cloudinary url
+            required: true,
+        },
+        coverImage: {
+            type: String, // cloudinary url
+        },
+        watchHistory: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Video"
+            }
+        ],
+        password: {
+            type: String,
+            required: [true, 'Password is required']
+        },
+        refreshToken: {
+            type: String
+        }
+
     },
-    email:{
-        type:String,
-        required:true
-    },
-   password: {
-    type:String,
-    required:[true,'password is must']
-    },
-    avatar:{
-        type:String
-    },
-     coverImage:{
-        type:String
-     },
-      watchHistory:{
-        type:Schema.Types.ObjectId,
-        ref:"Video"
-      },
-    refreshToken:{
-        type:String
-    }
-},{
-    timestamps:true
-});
+    {
+        timestamps: true
+    });
 // pre middle ware chla dia... save hone se pehle encrypt krega
 userSchema.pre("save", async function(){
 
